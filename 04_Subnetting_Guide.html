@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subnetting Step-by-Step Guide – OS Installation Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #1a3a6b;
+      --accent: #2563eb;
+      --highlight: #dbeafe;
+      --border: #cbd5e1;
+      --bg: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+      --mono: 'Fira Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .page {
+      max-width: 940px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+      color: #fff;
+      padding: 30px 44px;
+    }
+    .doc-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; opacity:.65; margin-bottom:6px; }
+    .header h1 { font-size:26px; font-weight:800; line-height:1.2; }
+    .header h2 { font-size:13px; font-weight:400; opacity:.8; margin-top:5px; }
+    .header-meta {
+      display:flex; gap:24px; margin-top:14px;
+      padding-top:14px; border-top:1px solid rgba(255,255,255,.2);
+      flex-wrap:wrap;
+    }
+    .header-meta span { font-size:11.5px; opacity:.8; }
+    .header-meta strong { color:#fff; }
+
+    /* ─── BODY ─── */
+    .body { padding:36px 44px; }
+
+    /* section title */
+    .sec-title {
+      font-size:13px; font-weight:700; color:var(--primary);
+      text-transform:uppercase; letter-spacing:1.2px;
+      border-bottom:2px solid var(--accent);
+      padding-bottom:6px; margin-bottom:16px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .sec-title .icon {
+      width:24px; height:24px; background:var(--accent);
+      border-radius:5px; display:flex; align-items:center;
+      justify-content:center; color:#fff; font-size:13px; flex-shrink:0;
+    }
+    .section { margin-bottom:34px; }
+
+    /* intro box */
+    .intro-box {
+      background:var(--highlight);
+      border-left:4px solid var(--accent);
+      border-radius:0 8px 8px 0;
+      padding:14px 18px; font-size:13px; color:var(--primary);
+      margin-bottom:18px;
+    }
+
+    /* ─── CONCEPT CARDS ─── */
+    .concept-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+    .concept-card {
+      border:1px solid var(--border); border-radius:10px;
+      overflow:hidden;
+    }
+    .concept-card-head {
+      padding:9px 14px; font-weight:700; font-size:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .concept-card-body { padding:12px 14px; font-size:12.5px; }
+    .cc1 .concept-card-head { background:#eff6ff; color:#1d4ed8; }
+    .cc2 .concept-card-head { background:#f0fdf4; color:#15803d; }
+    .cc3 .concept-card-head { background:#fdf4ff; color:#7e22ce; }
+    .cc4 .concept-card-head { background:#fff7ed; color:#c2410c; }
+
+    /* ─── BINARY TABLE ─── */
+    .binary-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:10px; }
+    .binary-table th {
+      background:var(--primary); color:#fff;
+      padding:7px 10px; text-align:center; font-size:11px;
+    }
+    .binary-table td {
+      padding:7px 10px; border:1px solid var(--border);
+      text-align:center; font-family:var(--mono);
+    }
+    .binary-table .bit-1 { background:#dbeafe; color:#1e40af; font-weight:700; }
+    .binary-table .bit-0 { background:#f1f5f9; color:#64748b; }
+    .binary-table .result { background:#fefce8; font-weight:700; }
+    .binary-table .header-row th { background:#374151; }
+
+    /* ─── STEP CARDS ─── */
+    .step-card {
+      border-radius:12px; margin-bottom:18px;
+      overflow:hidden; border:1px solid var(--border);
+    }
+    .step-header {
+      display:flex; align-items:center; gap:14px;
+      padding:12px 18px;
+    }
+    .step-num {
+      width:40px; height:40px; border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; font-weight:900; flex-shrink:0;
+      background:rgba(255,255,255,.25); color:#fff;
+    }
+    .step-title { font-weight:700; font-size:14px; }
+    .step-subtitle { font-size:11.5px; opacity:.85; }
+    .step-body { padding:16px 18px; font-size:12.5px; }
+
+    /* step colors */
+    .s1 .step-header { background:linear-gradient(90deg,#1d4ed8,#3b82f6); color:#fff; }
+    .s2 .step-header { background:linear-gradient(90deg,#15803d,#22c55e); color:#fff; }
+    .s3 .step-header { background:linear-gradient(90deg,#7e22ce,#a855f7); color:#fff; }
+    .s4 .step-header { background:linear-gradient(90deg,#c2410c,#f97316); color:#fff; }
+    .s5 .step-header { background:linear-gradient(90deg,#854d0e,#eab308); color:#fff; }
+    .s6 .step-header { background:linear-gradient(90deg,#0f766e,#14b8a6); color:#fff; }
+    .s7 .step-header { background:linear-gradient(90deg,#be185d,#ec4899); color:#fff; }
+
+    /* ─── FORMULA BOX ─── */
+    .formula {
+      background:#0f172a; color:#e2e8f0;
+      border-radius:8px; padding:14px 18px;
+      font-family:var(--mono); font-size:13px;
+      margin:10px 0; line-height:1.8;
+    }
+    .formula .kw { color:#60a5fa; }  /* keyword / label */
+    .formula .val { color:#34d399; font-weight:700; } /* value */
+    .formula .cmt { color:#6b7280; font-size:11px; } /* comment */
+    .formula .op { color:#f472b6; } /* operator */
+    .formula .warn { color:#fbbf24; }
+
+    /* ─── EXAMPLE BOX ─── */
+    .example-box {
+      background:#f8fafc; border:1px solid var(--border);
+      border-radius:10px; overflow:hidden; margin:14px 0;
+    }
+    .example-head {
+      background:var(--primary); color:#fff;
+      padding:8px 16px; font-size:12px; font-weight:700;
+      display:flex; align-items:center; gap:8px;
+    }
+    .example-body { padding:14px 16px; }
+
+    /* ─── SUBNET CHEATSHEET TABLE ─── */
+    .cheat-table { width:100%; border-collapse:collapse; font-size:11.5px; }
+    .cheat-table th {
+      background:var(--primary); color:#fff;
+      padding:8px 10px; text-align:center; font-size:11px;
+    }
+    .cheat-table td {
+      padding:7px 10px; border-bottom:1px solid var(--border);
+      text-align:center;
+    }
+    .cheat-table tr:nth-child(even) td { background:var(--bg); }
+    .cheat-table .highlight { background:#dbeafe; font-weight:700; color:#1e40af; }
+    .cheat-table td:first-child { font-family:var(--mono); font-weight:600; }
+
+    /* ─── WINDOWS / LINUX STEPS ─── */
+    .os-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:10px; }
+    .os-card { border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+    .os-card-head {
+      padding:10px 16px; font-weight:700; font-size:13px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .os-card-win .os-card-head { background:#1d4ed8; color:#fff; }
+    .os-card-lin .os-card-head { background:#15803d; color:#fff; }
+    .os-card-body { padding:14px 16px; }
+    .os-step {
+      display:flex; gap:10px; align-items:flex-start;
+      padding:5px 0; border-bottom:1px dashed var(--border);
+      font-size:12px;
+    }
+    .os-step:last-child { border-bottom:none; }
+    .os-step-num {
+      width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:800; flex-shrink:0;
+      color:#fff; margin-top:2px;
+    }
+    .win-num { background:#1d4ed8; }
+    .lin-num { background:#15803d; }
+
+    /* ─── PRACTICE TABLE ─── */
+    .practice-table { width:100%; border-collapse:collapse; font-size:12px; }
+    .practice-table th {
+      background:#374151; color:#fff;
+      padding:8px 12px; text-align:left; font-size:11px;
+    }
+    .practice-table td {
+      padding:9px 12px; border-bottom:1px solid var(--border);
+      font-family:var(--mono);
+    }
+    .practice-table tr:nth-child(even) td { background:var(--bg); }
+    .fill-field {
+      border:none; border-bottom:1.5px solid var(--border);
+      width:100%; font-family:var(--mono); font-size:12px;
+      background:transparent; color:var(--text);
+      padding:2px 0;
+    }
+    .fill-field:focus { outline:none; border-bottom-color:var(--accent); }
+
+    /* ─── ALERT BOXES ─── */
+    .alert {
+      border-radius:8px; padding:12px 16px;
+      margin:12px 0; display:flex; gap:10px; font-size:12.5px;
+    }
+    .alert-icon { font-size:18px; flex-shrink:0; margin-top:-1px; }
+    .alert-tip     { background:#f0fdf4; border:1px solid #22c55e; }
+    .alert-warn    { background:#fefce8; border:1px solid #facc15; }
+    .alert-info    { background:#eff6ff; border:1px solid #3b82f6; }
+    .alert-danger  { background:#fef2f2; border:1px solid #ef4444; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background:var(--primary); color:rgba(255,255,255,.7);
+      text-align:center; padding:13px 20px; font-size:11px;
+    }
+    .footer strong { color:#fff; }
+
+    @media print {
+      body { background:#fff; }
+      .page { box-shadow:none; border:none; margin:0; border-radius:0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="doc-label">📡 Reference Guide | Document: 04</div>
+    <h1>Subnetting — Complete Step-by-Step Guide</h1>
+    <h2>For the OS Installation &amp; Network Setup Project — Read this before Phase 4</h2>
+    <div class="header-meta">
+      <span><strong>Subject:</strong> Computer Systems Servicing / Networking</span>
+      <span><strong>Topic:</strong> IPv4 Subnetting &amp; Static IP Configuration</span>
+      <span><strong>S.Y.:</strong> 2025–2026</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- WHAT IS SUBNETTING -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">📌</span> What is Subnetting?</div>
+      <div class="intro-box">
+        <strong>Subnetting</strong> is the process of dividing a large network into smaller, more manageable
+        networks called <em>subnets</em>. In this project, your group will create a small subnet and assign
+        each computer its own unique IP address so they can communicate with each other.
+      </div>
+      <div class="concept-grid">
+        <div class="concept-card cc1">
+          <div class="concept-card-head">🔢 IP Address</div>
+          <div class="concept-card-body">
+            A unique number assigned to each device on a network. Written as 4 groups of numbers separated by dots.<br/>
+            <strong>Example:</strong> <code>192.168.10.1</code>
+          </div>
+        </div>
+        <div class="concept-card cc2">
+          <div class="concept-card-head">🎭 Subnet Mask</div>
+          <div class="concept-card-body">
+            Tells the computer which part of the IP is the <em>network</em> and which part is the <em>host</em>.<br/>
+            <strong>Example:</strong> <code>255.255.255.0</code>
+          </div>
+        </div>
+        <div class="concept-card cc3">
+          <div class="concept-card-head">🏠 Network Address</div>
+          <div class="concept-card-body">
+            The first address in a subnet. This represents the entire network. <strong>Cannot be assigned</strong> to any device.<br/>
+            <strong>Example:</strong> <code>192.168.10.0</code>
+          </div>
+        </div>
+        <div class="concept-card cc4">
+          <div class="concept-card-head">📢 Broadcast Address</div>
+          <div class="concept-card-body">
+            The last address in a subnet. Used to send messages to <em>all</em> devices. <strong>Cannot be assigned</strong> to any device.<br/>
+            <strong>Example:</strong> <code>192.168.10.255</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IP ADDRESS BREAKDOWN -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">🧱</span> Understanding an IP Address</div>
+      <p style="margin-bottom:12px;">Every IP address has <strong>4 parts (octets)</strong> separated by dots. Each part is a number from <strong>0 to 255</strong>. Each number can be written in <strong>binary</strong> (8 bits = 1 octet).</p>
+      <table class="binary-table">
+        <thead>
+          <tr>
+            <th>IP Address Part</th>
+            <th>Decimal Value</th>
+            <th colspan="8">Binary Representation (8 bits)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>First Octet</strong></td>
+            <td><strong>192</strong></td>
+            <td class="bit-1">1</td><td class="bit-1">1</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-0">0</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-0">0</td>
+          </tr>
+          <tr>
+            <td><strong>Second Octet</strong></td>
+            <td><strong>168</strong></td>
+            <td class="bit-1">1</td><td class="bit-0">0</td><td class="bit-1">1</td>
+            <td class="bit-0">0</td><td class="bit-1">1</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-0">0</td>
+          </tr>
+          <tr>
+            <td><strong>Third Octet</strong></td>
+            <td><strong>10</strong></td>
+            <td class="bit-0">0</td><td class="bit-0">0</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-1">1</td><td class="bit-0">0</td>
+            <td class="bit-1">1</td><td class="bit-0">0</td>
+          </tr>
+          <tr>
+            <td><strong>Fourth Octet</strong></td>
+            <td><strong>0</strong></td>
+            <td class="bit-0">0</td><td class="bit-0">0</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-0">0</td><td class="bit-0">0</td>
+            <td class="bit-0">0</td><td class="bit-0">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info">
+        <span class="alert-icon">💡</span>
+        <div><strong>Tip:</strong> You don't need to memorize binary for this project. Just remember: each IP address has 4 numbers (0–255), and the subnet mask tells you how many of those numbers are the "network" part.</div>
+      </div>
+    </div>
+
+    <!-- CIDR EXPLAINED -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">🔖</span> CIDR Notation Explained</div>
+      <p style="margin-bottom:12px;">
+        CIDR (Classless Inter-Domain Routing) uses a <strong>slash number</strong> after the IP address to indicate the subnet mask.
+        The number tells you how many bits are used for the <em>network</em> portion.
+      </p>
+      <table class="cheat-table">
+        <thead>
+          <tr>
+            <th>CIDR</th>
+            <th>Subnet Mask</th>
+            <th>Total Addresses</th>
+            <th>Usable Hosts</th>
+            <th>Use Case in Project</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td><td>Large class (many computers)</td></tr>
+          <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td><td>Medium group</td></tr>
+          <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>Medium group</td></tr>
+          <tr class="highlight"><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td><td>✅ Good for 5–10 PCs</td></tr>
+          <tr class="highlight"><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td><td>✅ Good for 2–5 PCs (Recommended)</td></tr>
+          <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td><td>Minimum (2–3 PCs only)</td></tr>
+          <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td><td>Point-to-point only</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-tip">
+        <span class="alert-icon">✅</span>
+        <div><strong>For this project</strong> — use <code>/28</code> (subnet mask: <code>255.255.255.240</code>). It gives you 14 usable IPs which is more than enough for 2–3 computers.</div>
+      </div>
+    </div>
+
+    <!-- ===== STEP BY STEP CALCULATION ===== -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">🪜</span> Step-by-Step: How to Calculate Your Subnet</div>
+      <p style="margin-bottom:18px;">Follow these steps carefully. We will use the example network: <code style="font-family:var(--mono); font-size:14px; font-weight:700; color:#1d4ed8;">192.168.10.0 /28</code></p>
+
+      <!-- STEP 1 -->
+      <div class="step-card s1">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Choose Your Network Address</div>
+            <div class="step-subtitle">Pick the starting IP for your group's network</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p style="margin-bottom:8px;">A <strong>network address</strong> is just the base or starting address of your subnet. It always ends in <code>.0</code> (or matches the first address in the range). Your teacher may assign this to you, or you can choose it.</p>
+          <div class="formula">
+<span class="cmt"># Common private network ranges you can use:</span>
+<span class="kw">Network A:</span> <span class="val">192.168.1.0</span>   <span class="cmt">— most common for home/lab networks</span>
+<span class="kw">Network B:</span> <span class="val">192.168.10.0</span>  <span class="cmt">— also common</span>
+<span class="kw">Network C:</span> <span class="val">10.0.0.0</span>      <span class="cmt">— enterprise style</span>
+
+<span class="cmt"># For this project, we will use:</span>
+<span class="kw">Network Address:</span> <span class="val">192.168.10.0</span>
+<span class="kw">CIDR:</span>            <span class="val">/28</span>
+          </div>
+          <div class="alert alert-warn">
+            <span class="alert-icon">⚠️</span>
+            <div>Write down your chosen network address on your submission paper right after choosing it — you will need it for every calculation below.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card s2">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Find the Subnet Mask from the CIDR Number</div>
+            <div class="step-subtitle">Convert /28 into dotted-decimal notation</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p style="margin-bottom:10px;">The CIDR number (like <code>/28</code>) tells you how many bits are <strong>"ON" (255)</strong> in the subnet mask. Use the cheat sheet from the table above, or use this rule:</p>
+          <div class="formula">
+<span class="cmt"># Rule: Subtract CIDR from 256 to find the last octet</span>
+
+<span class="kw">Formula:</span>  <span class="val">256 - 2^(32 - CIDR)</span>  <span class="cmt">(for the last changed octet)</span>
+
+<span class="cmt"># For /28:</span>
+  <span class="kw">Bits used for network:</span> <span class="val">28</span>
+  <span class="kw">Bits left for hosts:</span>   <span class="val">32 - 28 = 4 bits</span>
+  <span class="kw">Block size:</span>            <span class="val">2^4 = 16</span>
+  <span class="kw">Last octet value:</span>      <span class="val">256 - 16 = 240</span>
+
+<span class="cmt"># Result:</span>
+  <span class="kw">Subnet Mask =</span> <span class="val">255.255.255.240</span>
+          </div>
+          <div class="example-box">
+            <div class="example-head">📋 Quick Reference — CIDR to Subnet Mask</div>
+            <div class="example-body">
+              <p><code>/24</code> → <strong>255.255.255.0</strong> &nbsp;|&nbsp; <code>/25</code> → <strong>255.255.255.128</strong> &nbsp;|&nbsp; <code>/26</code> → <strong>255.255.255.192</strong></p>
+              <p style="margin-top:6px;"><code>/27</code> → <strong>255.255.255.224</strong> &nbsp;|&nbsp; <code>/28</code> → <strong>255.255.255.240</strong> &nbsp;|&nbsp; <code>/29</code> → <strong>255.255.255.248</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card s3">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Calculate the Total Number of IP Addresses</div>
+            <div class="step-subtitle">How many addresses does your subnet contain?</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="formula">
+<span class="cmt"># Formula: 2 ^ (number of HOST bits)</span>
+
+<span class="kw">Host bits</span>       = <span class="val">32 - CIDR</span>
+<span class="kw">Host bits (/28)</span> = <span class="val">32 - 28 = 4</span>
+
+<span class="kw">Total Addresses</span> = <span class="val">2 ^ 4 = 16</span>
+
+<span class="cmt"># This means your subnet has 16 total IP addresses</span>
+<span class="cmt"># (but 2 of those are reserved — see Step 4 and Step 5)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card s4">
+        <div class="step-header">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Find the Broadcast Address</div>
+            <div class="step-subtitle">The LAST address in your subnet (reserved)</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p style="margin-bottom:10px;">The <strong>Broadcast Address</strong> is the very last IP in your subnet. To find it, add the total number of addresses to the network address, then subtract 1.</p>
+          <div class="formula">
+<span class="cmt"># Formula: Network Address + Total Addresses - 1</span>
+
+<span class="kw">Network Address:</span>    <span class="val">192.168.10.0</span>
+<span class="kw">Total Addresses:</span>    <span class="val">16</span>
+<span class="kw">Last Octet of Net:</span>  <span class="val">0</span>
+
+<span class="kw">Broadcast =</span> <span class="val">0 + 16 - 1 = 15</span>
+
+<span class="cmt"># Result:</span>
+<span class="kw">Broadcast Address =</span> <span class="val">192.168.10.15</span>
+
+<span class="warn">⛔ NEVER assign this address to a computer!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card s5">
+        <div class="step-header">
+          <div class="step-num">5</div>
+          <div>
+            <div class="step-title">Find the Usable Host IP Range</div>
+            <div class="step-subtitle">These are the IPs you can actually assign to computers</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p style="margin-bottom:10px;">The usable range is everything <strong>between</strong> the network address and broadcast address. Skip the first (network) and last (broadcast) addresses:</p>
+          <div class="formula">
+<span class="cmt"># Formula:</span>
+<span class="kw">First Usable IP</span> = Network Address + 1
+<span class="kw">Last Usable IP</span>  = Broadcast Address - 1
+<span class="kw">Total Usable</span>    = Total Addresses - 2
+
+<span class="cmt"># For our /28 example:</span>
+<span class="kw">Network Address:</span>    <span class="val">192.168.10.0</span>   <span class="warn">← RESERVED (network)</span>
+<span class="kw">First Usable IP:</span>   <span class="val">192.168.10.1</span>   <span class="cmt">← assign to Computer A</span>
+<span class="kw">Second Usable IP:</span>  <span class="val">192.168.10.2</span>   <span class="cmt">← assign to Computer B</span>
+<span class="kw">Third Usable IP:</span>   <span class="val">192.168.10.3</span>   <span class="cmt">← assign to Computer C</span>
+   <span class="cmt">...and so on until...</span>
+<span class="kw">Last Usable IP:</span>    <span class="val">192.168.10.14</span>  <span class="cmt">← last assignable IP</span>
+<span class="kw">Broadcast Address:</span> <span class="val">192.168.10.15</span>  <span class="warn">← RESERVED (broadcast)</span>
+
+<span class="kw">Total Usable Hosts:</span> <span class="val">16 - 2 = 14</span>
+          </div>
+          <div class="alert alert-tip">
+            <span class="alert-icon">✅</span>
+            <div><strong>Remember:</strong> Always <strong>skip .0 and .15</strong> (for /28). Only assign IPs from <code>.1</code> to <code>.14</code> to your computers.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-card s6">
+        <div class="step-header">
+          <div class="step-num">6</div>
+          <div>
+            <div class="step-title">Count the Number of Usable Hosts</div>
+            <div class="step-subtitle">How many computers can connect to this subnet?</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="formula">
+<span class="cmt"># Formula: 2 ^ host bits - 2</span>
+<span class="cmt"># (subtract 2 to remove network and broadcast addresses)</span>
+
+<span class="kw">Host bits:</span>     <span class="val">4</span>       <span class="cmt">(because /28: 32 - 28 = 4)</span>
+<span class="kw">Hosts:</span>         <span class="val">2^4 - 2 = 16 - 2 = 14</span>
+
+<span class="cmt"># Your /28 subnet supports up to 14 computers!</span>
+<span class="cmt"># More than enough for your group of 2-3 PCs.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step-card s7">
+        <div class="step-header">
+          <div class="step-num">7</div>
+          <div>
+            <div class="step-title">Assign IPs to Each Computer (Static IP)</div>
+            <div class="step-subtitle">Configure each PC with an IP from the usable range</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p style="margin-bottom:10px;">Pick any IP from the usable range and assign one to each computer. Each computer must have a <strong>different</strong> IP address. See the instructions below for Windows and Linux:</p>
+          <div class="os-grid">
+            <!-- WINDOWS -->
+            <div class="os-card os-card-win">
+              <div class="os-card-head">🖥️ Windows — Set Static IP</div>
+              <div class="os-card-body">
+                <div class="os-step">
+                  <div class="os-step-num win-num">1</div>
+                  <div>Press <code>Windows Key + R</code>, type <code>ncpa.cpl</code>, press Enter. This opens <em>Network Connections</em>.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">2</div>
+                  <div><strong>Right-click</strong> your LAN adapter (Ethernet), then click <strong>Properties</strong>.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">3</div>
+                  <div>Double-click <strong>"Internet Protocol Version 4 (TCP/IPv4)"</strong>.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">4</div>
+                  <div>Select <strong>"Use the following IP address"</strong>.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">5</div>
+                  <div>Enter your values:<br/>
+                    <code>IP Address: 192.168.10.1</code><br/>
+                    <code>Subnet Mask: 255.255.255.240</code><br/>
+                    <code>Default Gateway: 192.168.10.1</code>
+                  </div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">6</div>
+                  <div>Click <strong>OK</strong> to save. Then click <strong>OK</strong> again to close Properties.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num win-num">7</div>
+                  <div>Open Command Prompt and type <code>ipconfig</code> to confirm your IP is saved correctly.</div>
+                </div>
+              </div>
+            </div>
+            <!-- LINUX -->
+            <div class="os-card os-card-lin">
+              <div class="os-card-head">🐧 Linux — Set Static IP (Terminal)</div>
+              <div class="os-card-body">
+                <div class="os-step">
+                  <div class="os-step-num lin-num">1</div>
+                  <div>Open a <strong>Terminal</strong> (right-click desktop → Open Terminal, or search "Terminal").</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num lin-num">2</div>
+                  <div>Type this to see your network adapter name:<br/><code>ip addr show</code><br/>Look for something like <code>eth0</code> or <code>enp3s0</code>.</div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num lin-num">3</div>
+                  <div>Assign a static IP (replace <code>eth0</code> with your adapter name):<br/>
+                    <code>sudo ip addr add 192.168.10.2/28 dev eth0</code>
+                  </div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num lin-num">4</div>
+                  <div>Bring the interface UP:<br/><code>sudo ip link set eth0 up</code></div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num lin-num">5</div>
+                  <div>Verify the IP was applied:<br/><code>ip addr show eth0</code></div>
+                </div>
+                <div class="os-step">
+                  <div class="os-step-num lin-num">6</div>
+                  <div><strong>GUI Alternative:</strong> Click the network icon → Edit Connections → IPv4 → Set to Manual → Fill in IP, Mask, Gateway → Save.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VERIFY -->
+          <div style="margin-top:16px;">
+            <div style="font-size:12.5px; font-weight:700; color:var(--primary); margin-bottom:8px;">🔍 How to Verify Your IP is Correct</div>
+            <div class="formula">
+<span class="cmt"># On Windows — open Command Prompt (cmd) and type:</span>
+<span class="kw">></span> <span class="val">ipconfig</span>
+
+<span class="cmt"># On Linux — open Terminal and type:</span>
+<span class="kw">$</span> <span class="val">ip addr show</span>
+<span class="cmt"># OR</span>
+<span class="kw">$</span> <span class="val">ifconfig</span>
+
+<span class="cmt"># You should see your assigned IP address listed</span>
+<span class="cmt"># next to your network adapter (Ethernet or enp3s0, etc.)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end steps section -->
+
+    <!-- COMPLETE WORKED EXAMPLE -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">🧮</span> Complete Worked Example — Summary</div>
+      <p style="margin-bottom:14px;">Here is the complete result of all 7 steps for our example: <strong><code>192.168.10.0 /28</code></strong></p>
+      <table class="cheat-table" style="font-size:13px;">
+        <thead>
+          <tr>
+            <th>What</th>
+            <th>Value</th>
+            <th>How You Got It</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-family:var(--mono);">Network Address</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.0</td><td>Given / chosen — this is your starting point</td></tr>
+          <tr><td style="font-family:var(--mono);">CIDR Notation</td><td style="font-family:var(--mono);font-weight:700;">/28</td><td>Tells us 28 bits are for network, 4 for hosts</td></tr>
+          <tr><td style="font-family:var(--mono);">Subnet Mask</td><td style="font-family:var(--mono);font-weight:700;">255.255.255.240</td><td>256 − 16 = 240 (last octet)</td></tr>
+          <tr><td style="font-family:var(--mono);">Total IP Addresses</td><td style="font-family:var(--mono);font-weight:700;">16</td><td>2⁴ = 16</td></tr>
+          <tr><td style="font-family:var(--mono);">Broadcast Address</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.15</td><td>0 + 16 − 1 = 15</td></tr>
+          <tr><td style="font-family:var(--mono);">First Usable IP</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.1</td><td>Network Address + 1</td></tr>
+          <tr><td style="font-family:var(--mono);">Last Usable IP</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.14</td><td>Broadcast − 1</td></tr>
+          <tr class="highlight"><td style="font-family:var(--mono);">Total Usable Hosts</td><td style="font-family:var(--mono);font-weight:800;">14</td><td>2⁴ − 2 = 14 (enough for 14 computers!)</td></tr>
+          <tr><td style="font-family:var(--mono);">Computer A IP</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.1</td><td>Assigned from usable range</td></tr>
+          <tr><td style="font-family:var(--mono);">Computer B IP</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.2</td><td>Assigned from usable range</td></tr>
+          <tr><td style="font-family:var(--mono);">Computer C IP</td><td style="font-family:var(--mono);font-weight:700;">192.168.10.3</td><td>Assigned from usable range</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- HOW TO PING -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">📡</span> How to Test with Ping</div>
+      <p style="margin-bottom:12px;">After setting up your IPs, test connectivity using the <code>ping</code> command. This sends small data packets to the other computer and waits for a reply.</p>
+      <div class="formula">
+<span class="cmt"># On Windows — Command Prompt</span>
+<span class="kw">></span> <span class="val">ping 192.168.10.2</span>   <span class="cmt">← from Computer A to Computer B</span>
+<span class="kw">></span> <span class="val">ping 192.168.10.3</span>   <span class="cmt">← from Computer A to Computer C</span>
+
+<span class="cmt"># Expected GOOD result (success):</span>
+  <span class="val">Reply from 192.168.10.2: bytes=32 time&lt;1ms TTL=128</span>
+  <span class="val">Reply from 192.168.10.2: bytes=32 time&lt;1ms TTL=128</span>
+  <span class="val">Reply from 192.168.10.2: bytes=32 time&lt;1ms TTL=128</span>
+  <span class="val">Reply from 192.168.10.2: bytes=32 time&lt;1ms TTL=128</span>
+  <span class="val">Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)</span>
+
+<span class="warn"># BAD result (failure — check your IP or cable):</span>
+  <span class="warn">Request timed out.</span>
+  <span class="warn">Request timed out.</span>
+
+<span class="cmt"># On Linux — Terminal</span>
+<span class="kw">$</span> <span class="val">ping -c 4 192.168.10.1</span>  <span class="cmt">← sends 4 packets, then stops</span>
+      </div>
+      <div class="alert alert-warn">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Firewall Issue:</strong> If ping fails on Windows, the Windows Firewall might be blocking it. Go to <em>Control Panel → Windows Defender Firewall → Allow an app or feature → check "File and Printer Sharing"</em> — this enables ping to go through.</div>
+      </div>
+    </div>
+
+    <!-- PRACTICE EXERCISES -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">✏️</span> Practice Exercises — Try These!</div>
+      <p style="margin-bottom:12px;">Calculate the missing values for each network below. Use the steps above to help you. Write your answers directly in this table:</p>
+      <table class="practice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Network Address / CIDR</th>
+            <th>Subnet Mask</th>
+            <th>Broadcast Address</th>
+            <th>First Usable IP</th>
+            <th>Last Usable IP</th>
+            <th>Total Hosts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#e0f2fe; font-weight:700;">
+            <td>✅</td>
+            <td>192.168.10.0 /28</td>
+            <td>255.255.255.240</td>
+            <td>192.168.10.15</td>
+            <td>192.168.10.1</td>
+            <td>192.168.10.14</td>
+            <td style="color:#1d4ed8;">14</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>192.168.1.0 /28</td>
+            <td><input class="fill-field" placeholder="________.__"/></td>
+            <td><input class="fill-field" placeholder="192.168.1.__"/></td>
+            <td><input class="fill-field" placeholder="192.168.1.__"/></td>
+            <td><input class="fill-field" placeholder="192.168.1.__"/></td>
+            <td><input class="fill-field" placeholder="__"/></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>10.0.0.0 /29</td>
+            <td><input class="fill-field" placeholder="255.255.255.__"/></td>
+            <td><input class="fill-field" placeholder="10.0.0.__"/></td>
+            <td><input class="fill-field" placeholder="10.0.0.__"/></td>
+            <td><input class="fill-field" placeholder="10.0.0.__"/></td>
+            <td><input class="fill-field" placeholder="__"/></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>172.16.0.0 /27</td>
+            <td><input class="fill-field" placeholder="255.255.255.__"/></td>
+            <td><input class="fill-field" placeholder="172.16.0.__"/></td>
+            <td><input class="fill-field" placeholder="172.16.0.__"/></td>
+            <td><input class="fill-field" placeholder="172.16.0.__"/></td>
+            <td><input class="fill-field" placeholder="__"/></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px; font-size:11px; color:var(--muted);">
+        <strong>Answer Key (Exercise 1):</strong> Mask: 255.255.255.240 | Broadcast: 192.168.1.15 | First: 192.168.1.1 | Last: 192.168.1.14 | Hosts: 14 &nbsp;·&nbsp;
+        <strong>(Exercise 2):</strong> Mask: 255.255.255.248 | Broadcast: 10.0.0.7 | First: 10.0.0.1 | Last: 10.0.0.6 | Hosts: 6 &nbsp;·&nbsp;
+        <strong>(Exercise 3):</strong> Mask: 255.255.255.224 | Broadcast: 172.16.0.31 | First: 172.16.0.1 | Last: 172.16.0.30 | Hosts: 30
+      </div>
+    </div>
+
+    <!-- QUICK CHECKLIST -->
+    <div class="section">
+      <div class="sec-title"><span class="icon">☑️</span> Phase 4 Quick Checklist</div>
+      <div class="alert alert-info">
+        <span class="alert-icon">📋</span>
+        <div>
+          Before moving to Phase 5 (Ping Test), make sure you have completed all of these:
+          <ul style="margin-top:8px; padding-left:18px; line-height:2;">
+            <li>✅ Chosen a network address and CIDR (e.g., <code>192.168.10.0 /28</code>)</li>
+            <li>✅ Calculated the correct subnet mask</li>
+            <li>✅ Identified first usable IP, last usable IP, and broadcast address</li>
+            <li>✅ Filled in the Subnet Table in your Submission Paper (<em>Document 02</em>)</li>
+            <li>✅ Assigned a different static IP to each computer</li>
+            <li>✅ Connected computers via LAN cable or switch</li>
+            <li>✅ Verified IPs using <code>ipconfig</code> (Windows) or <code>ip addr show</code> (Linux)</li>
+            <li>✅ Screenshot taken and attached for documentation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end body -->
+
+  <div class="footer">
+    <strong>OS Installation &amp; Network Setup Project</strong> &nbsp;|&nbsp;
+    Subnetting Step-by-Step Guide &nbsp;|&nbsp; Document: 04 &nbsp;|&nbsp; S.Y. 2025–2026
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grading Rubric – OS Installation & Network Setup Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #1a3a6b;
+      --accent: #2563eb;
+      --border: #cbd5e1;
+      --bg: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .page {
+      max-width: 1050px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%);
+      color: #fff;
+      padding: 28px 40px;
+    }
+    .doc-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+    .header h1 { font-size: 24px; font-weight: 800; }
+    .header h2 { font-size: 13px; font-weight: 400; opacity: 0.8; margin-top: 4px; }
+    .header-meta {
+      display: flex;
+      gap: 28px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      flex-wrap: wrap;
+    }
+    .header-meta span { font-size: 11.5px; opacity: 0.8; }
+    .header-meta strong { color: #fff; }
+
+    /* TOTAL SCORE BANNER */
+    .score-banner {
+      display: flex;
+      background: #eff6ff;
+      border-bottom: 2px solid var(--accent);
+      padding: 14px 40px;
+      gap: 28px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .score-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 18px;
+      min-width: 100px;
+    }
+    .score-item .num { font-size: 26px; font-weight: 800; color: var(--primary); }
+    .score-item .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
+    .legend-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-left: auto;
+    }
+    .legend-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .l-excellent { background: #dcfce7; color: #166534; }
+    .l-proficient { background: #dbeafe; color: #1e40af; }
+    .l-developing { background: #fef9c3; color: #854d0e; }
+    .l-beginning  { background: #fee2e2; color: #991b1b; }
+
+    /* BODY */
+    .body { padding: 28px 40px; }
+
+    .section { margin-bottom: 32px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .section-info h3 {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .section-info p { font-size: 11px; opacity: 0.8; }
+    .pts-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* SECTION COLORS */
+    .s1 .section-header { background: #1d4ed8; color: #fff; }
+    .s1 .section-icon { background: rgba(255,255,255,0.2); }
+    .s2 .section-header { background: #15803d; color: #fff; }
+    .s2 .section-icon { background: rgba(255,255,255,0.2); }
+    .s3 .section-header { background: #7e22ce; color: #fff; }
+    .s3 .section-icon { background: rgba(255,255,255,0.2); }
+    .s4 .section-header { background: #c2410c; color: #fff; }
+    .s4 .section-icon { background: rgba(255,255,255,0.2); }
+    .s5 .section-header { background: #854d0e; color: #fff; }
+    .s5 .section-icon { background: rgba(255,255,255,0.2); }
+    .s6 .section-header { background: #0f766e; color: #fff; }
+    .s6 .section-icon { background: rgba(255,255,255,0.2); }
+
+    /* RUBRIC TABLE */
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+    }
+    .rubric-table th {
+      padding: 9px 12px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border: 1px solid var(--border);
+    }
+    .rubric-table th.criteria-head {
+      background: var(--primary);
+      color: #fff;
+      text-align: left;
+      width: 22%;
+    }
+    .rubric-table th.excellent { background: #15803d; color: #fff; }
+    .rubric-table th.proficient { background: #1d4ed8; color: #fff; }
+    .rubric-table th.developing { background: #b45309; color: #fff; }
+    .rubric-table th.beginning  { background: #b91c1c; color: #fff; }
+    .rubric-table th.score-head { background: #374151; color: #fff; width: 80px; }
+
+    .rubric-table td {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    .rubric-table .criteria-cell {
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 11.5px;
+    }
+    .rubric-table .criteria-cell .pts {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .rubric-table .ex-cell { background: #f0fdf4; font-size: 11px; }
+    .rubric-table .pr-cell { background: #eff6ff; font-size: 11px; }
+    .rubric-table .dv-cell { background: #fffbeb; font-size: 11px; }
+    .rubric-table .bg-cell { background: #fef2f2; font-size: 11px; }
+    .rubric-table .score-cell { 
+      text-align: center;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .rubric-table .score-input {
+      width: 44px;
+      height: 30px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      color: var(--primary);
+    }
+    .rubric-table .score-input:focus { outline: none; border-color: var(--accent); }
+
+    .rubric-table .subtotal-row td {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      text-align: right;
+      padding: 7px 12px;
+    }
+    .rubric-table .subtotal-row .score-cell {
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+    }
+    .rubric-table .subtotal-row .score-input {
+      background: var(--accent);
+      color: #fff;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    /* POINT SCALE */
+    .scale-key {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .scale-pill {
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    /* FINAL SCORE TABLE */
+    .final-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .final-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 12px;
+    }
+    .final-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .final-table tr:last-child td { 
+      border-bottom: none;
+      background: linear-gradient(90deg, #1a3a6b, #2563eb);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .final-table tr:nth-child(even) td { background: var(--bg); }
+
+    /* GRADE SCALE */
+    .grade-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .grade-table th {
+      background: #374151;
+      color: #fff;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 11px;
+    }
+    .grade-table td {
+      padding: 7px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .grade-A  { background: #dcfce7; color: #166534; }
+    .grade-B  { background: #dbeafe; color: #1e40af; }
+    .grade-C  { background: #fef9c3; color: #854d0e; }
+    .grade-D  { background: #fed7aa; color: #9a3412; }
+    .grade-F  { background: #fee2e2; color: #991b1b; }
+
+    /* TEACHER NOTES */
+    .notes-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+    .line { display: block; border-bottom: 1px solid var(--border); height: 24px; margin-bottom: 2px; }
+
+    /* SIG */
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .sig-col { border-top: 2px solid var(--primary); padding-top: 6px; }
+    .sig-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 600; }
+    .sig-area { height: 36px; }
+
+    /* FOOTER */
+    .footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 11px;
+    }
+    .footer strong { color: #fff; }
+
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; border: none; margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="doc-label">📊 Grading Rubric / Matrix | Document: 03</div>
+    <h1>OS Installation &amp; Network Setup Project</h1>
+    <h2>Teacher's Grading Rubric — Performance Task Assessment Tool</h2>
+    <div class="header-meta">
+      <span><strong>Subject:</strong> Computer Systems Servicing / Networking</span>
+      <span><strong>Total:</strong> 100 Points (+ 5 Bonus)</span>
+      <span><strong>S.Y.:</strong> 2025–2026</span>
+      <span><strong>Assessment Type:</strong> Performance / Laboratory</span>
+    </div>
+  </div>
+
+  <!-- SCORE BANNER -->
+  <div class="score-banner">
+    <div class="score-item">
+      <div class="num">100</div>
+      <div class="lbl">Total Points</div>
+    </div>
+    <div class="score-item">
+      <div class="num">6</div>
+      <div class="lbl">Categories</div>
+    </div>
+    <div class="score-item">
+      <div class="num">+5</div>
+      <div class="lbl">Bonus Pts</div>
+    </div>
+    <div class="legend-row">
+      <div class="legend-pill l-excellent"><div class="dot" style="background:#166534;"></div>Excellent (Full)</div>
+      <div class="legend-pill l-proficient"><div class="dot" style="background:#1e40af;"></div>Proficient (Good)</div>
+      <div class="legend-pill l-developing"><div class="dot" style="background:#854d0e;"></div>Developing (Partial)</div>
+      <div class="legend-pill l-beginning"><div class="dot" style="background:#991b1b;"></div>Beginning (Minimal)</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- STUDENT INFO -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 20px; margin-bottom:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
+      <div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px;">Group Name / Number</div>
+        <input style="border:none; border-bottom:1.5px solid var(--border); width:100%; font-size:12.5px; padding:4px 2px; background:transparent; font-family:'Inter',sans-serif;" placeholder="e.g. Group 3 – Alpha"/>
+      </div>
+      <div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px;">Section</div>
+        <input style="border:none; border-bottom:1.5px solid var(--border); width:100%; font-size:12.5px; padding:4px 2px; background:transparent; font-family:'Inter',sans-serif;" placeholder="e.g. Grade 12 – TVL A"/>
+      </div>
+      <div>
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px;">Date Assessed</div>
+        <input style="border:none; border-bottom:1.5px solid var(--border); width:100%; font-size:12.5px; padding:4px 2px; background:transparent; font-family:'Inter',sans-serif;" placeholder="e.g. April 12, 2026"/>
+      </div>
+    </div>
+
+    <!-- SECTION 1: WINDOWS -->
+    <div class="section s1">
+      <div class="section-header">
+        <div class="section-icon">🖥️</div>
+        <div class="section-info">
+          <h3>Category 1: Windows OS Installation</h3>
+          <p>Evaluates the student's ability to correctly install and configure the Windows operating system.</p>
+        </div>
+        <div class="pts-badge">20 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent<br/><small style="font-weight:400">Full Score</small></th>
+            <th class="proficient">Proficient<br/><small style="font-weight:400">Good</small></th>
+            <th class="developing">Developing<br/><small style="font-weight:400">Partial</small></th>
+            <th class="beginning">Beginning<br/><small style="font-weight:400">Minimal</small></th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">BIOS/UEFI Boot Setup<div class="pts">(max 4 pts)</div></td>
+            <td class="ex-cell">Correctly set USB as boot device; accessed BIOS without assistance. (4 pts)</td>
+            <td class="pr-cell">Accessed BIOS with minor guidance; boot order set correctly. (3 pts)</td>
+            <td class="dv-cell">Required significant teacher assistance to access BIOS. (2 pts)</td>
+            <td class="bg-cell">Unable to access BIOS or set boot priority. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="4" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Partitioning<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">Created precise partitions; left exactly the right amount of space for Linux. (6 pts)</td>
+            <td class="pr-cell">Partitioned correctly with minor sizing error (within 5GB). (4–5 pts)</td>
+            <td class="dv-cell">Partition setup was incomplete or incorrect but fixable. (2–3 pts)</td>
+            <td class="bg-cell">Did not partition correctly; oversized or missed unallocated space. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Successful Installation<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">Windows installed flawlessly; desktop loaded without errors. (6 pts)</td>
+            <td class="pr-cell">Windows installed with 1 minor issue resolved independently. (4–5 pts)</td>
+            <td class="dv-cell">Windows installed but required teacher intervention to fix errors. (2–3 pts)</td>
+            <td class="bg-cell">Windows installation failed or was incomplete. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">User Configuration<div class="pts">(max 4 pts)</div></td>
+            <td class="ex-cell">User account created properly; system settings configured. (4 pts)</td>
+            <td class="pr-cell">User account created; minor settings skipped. (3 pts)</td>
+            <td class="dv-cell">Basic setup done with some missing configuration. (2 pts)</td>
+            <td class="bg-cell">User configuration not completed. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="4" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4" style="text-align:right;">SUBTOTAL — Windows OS Installation</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="20" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2: LINUX -->
+    <div class="section s2">
+      <div class="section-header">
+        <div class="section-icon">🐧</div>
+        <div class="section-info">
+          <h3>Category 2: Linux OS Installation</h3>
+          <p>Evaluates the student's ability to correctly install a Linux distribution alongside Windows.</p>
+        </div>
+        <div class="pts-badge">20 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent (Full)</th>
+            <th class="proficient">Proficient (Good)</th>
+            <th class="developing">Developing (Partial)</th>
+            <th class="beginning">Beginning (Minimal)</th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">Bootable USB &amp; Startup<div class="pts">(max 4 pts)</div></td>
+            <td class="ex-cell">Booted from Linux USB correctly; installer launched without issues. (4 pts)</td>
+            <td class="pr-cell">Minor difficulty booting; resolved independently. (3 pts)</td>
+            <td class="dv-cell">Needed assistance to boot from USB. (2 pts)</td>
+            <td class="bg-cell">Could not boot from Linux USB. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="4" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Partition Setup<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">Proper root, swap, and /home partitions created in unallocated space. (6 pts)</td>
+            <td class="pr-cell">Partitions set up correctly but missing /home or undersized. (4–5 pts)</td>
+            <td class="dv-cell">Partitions set up with errors; required correction. (2–3 pts)</td>
+            <td class="bg-cell">Did not partition correctly; overwrote Windows or failed. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Successful Installation<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">Linux installed flawlessly; GRUB installed; system boots. (6 pts)</td>
+            <td class="pr-cell">Linux installed with 1 issue resolved with minimal help. (4–5 pts)</td>
+            <td class="dv-cell">Linux installed but significant errors required teacher help. (2–3 pts)</td>
+            <td class="bg-cell">Linux did not install or GRUB was missing. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">User &amp; System Setup<div class="pts">(max 4 pts)</div></td>
+            <td class="ex-cell">Created user account, set timezone, and configured terminal access. (4 pts)</td>
+            <td class="pr-cell">User account created; some settings not configured. (3 pts)</td>
+            <td class="dv-cell">Minimal setup; only user account created. (2 pts)</td>
+            <td class="bg-cell">Setup incomplete or not done. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="4" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4">SUBTOTAL — Linux OS Installation</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="20" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 3: DUAL BOOT -->
+    <div class="section s3">
+      <div class="section-header">
+        <div class="section-icon">⚙️</div>
+        <div class="section-info">
+          <h3>Category 3: Dual-Boot Setup &amp; Verification</h3>
+          <p>Evaluates successful configuration and demonstration of dual-boot functionality via GRUB.</p>
+        </div>
+        <div class="pts-badge">15 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent (Full)</th>
+            <th class="proficient">Proficient (Good)</th>
+            <th class="developing">Developing (Partial)</th>
+            <th class="beginning">Beginning (Minimal)</th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">GRUB Boot Menu<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">GRUB appears correctly; shows both Windows and Linux options. (5 pts)</td>
+            <td class="pr-cell">GRUB appears but with minor display issue; both OSes selectable. (3–4 pts)</td>
+            <td class="dv-cell">GRUB configured but only one OS selectable. (2 pts)</td>
+            <td class="bg-cell">GRUB not installed or not visible. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Boot into Windows<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">Successfully boots Windows from GRUB without errors. (5 pts)</td>
+            <td class="pr-cell">Boots Windows with minor slowness / startup issue. (3–4 pts)</td>
+            <td class="dv-cell">Windows boots but shows errors or requires repair. (2 pts)</td>
+            <td class="bg-cell">Cannot boot Windows from GRUB. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Boot into Linux<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">Successfully boots Linux from GRUB without errors. (5 pts)</td>
+            <td class="pr-cell">Boots Linux with minor issue resolved quickly. (3–4 pts)</td>
+            <td class="dv-cell">Linux boots but with display or filesystem errors. (2 pts)</td>
+            <td class="bg-cell">Cannot boot Linux from GRUB. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4">SUBTOTAL — Dual-Boot Setup</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="15" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 4: SUBNETTING -->
+    <div class="section s4">
+      <div class="section-header">
+        <div class="section-icon">🌐</div>
+        <div class="section-info">
+          <h3>Category 4: Subnetting &amp; IP Configuration</h3>
+          <p>Evaluates the ability to design a correct subnet and configure static IP addresses on all computers.</p>
+        </div>
+        <div class="pts-badge">20 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent (Full)</th>
+            <th class="proficient">Proficient (Good)</th>
+            <th class="developing">Developing (Partial)</th>
+            <th class="beginning">Beginning (Minimal)</th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">Subnet Calculation<div class="pts">(max 8 pts)</div></td>
+            <td class="ex-cell">Correct network address, subnet mask, broadcast, host range, and CIDR notation. (8 pts)</td>
+            <td class="pr-cell">1–2 fields have minor errors; overall logic is correct. (6–7 pts)</td>
+            <td class="dv-cell">Subnet calculation has multiple errors; partially correct. (3–5 pts)</td>
+            <td class="bg-cell">Subnet calculation is mostly incorrect or missing. (0–2 pts)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="8" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Static IP Assignment<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">All computers have correct, non-conflicting IPs within the valid host range. (6 pts)</td>
+            <td class="pr-cell">IPs assigned correctly on most computers; 1 minor conflict. (4–5 pts)</td>
+            <td class="dv-cell">IPs partially configured; some machines not in the correct range. (2–3 pts)</td>
+            <td class="bg-cell">IPs not correctly assigned on most computers. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Physical Connection<div class="pts">(max 6 pts)</div></td>
+            <td class="ex-cell">LAN cables or switch connected properly; link lights are active on all ports. (6 pts)</td>
+            <td class="pr-cell">Physical connection made but one port needed re-seating. (4–5 pts)</td>
+            <td class="dv-cell">Connection attempted but unstable or incomplete. (2–3 pts)</td>
+            <td class="bg-cell">Physical connection not established. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="6" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4">SUBTOTAL — Subnetting &amp; IP Configuration</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="20" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 5: PING & MESSAGE -->
+    <div class="section s5">
+      <div class="section-header">
+        <div class="section-icon">📡</div>
+        <div class="section-info">
+          <h3>Category 5: Ping Test &amp; Message Sending</h3>
+          <p>Evaluates network connectivity testing and successful peer-to-peer communication between machines.</p>
+        </div>
+        <div class="pts-badge">15 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent (Full)</th>
+            <th class="proficient">Proficient (Good)</th>
+            <th class="developing">Developing (Partial)</th>
+            <th class="beginning">Beginning (Minimal)</th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">Ping Test (Windows)<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">All 4 packets sent and received (0% loss) on both directions. (5 pts)</td>
+            <td class="pr-cell">Ping successful, minor packet loss (1 packet). (3–4 pts)</td>
+            <td class="dv-cell">Ping partially successful; high packet loss but some replies. (2 pts)</td>
+            <td class="bg-cell">Ping failed entirely (request timed out). (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Ping Test (Linux)<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">Successful ping from Linux to Windows (or Linux-to-Linux) using terminal. (5 pts)</td>
+            <td class="pr-cell">Ping successful with minor latency or 1 packet loss. (3–4 pts)</td>
+            <td class="dv-cell">Partial success; intermittent ping replies. (2 pts)</td>
+            <td class="bg-cell">ping command not attempted or all packets lost. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Message Sending<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">Message sent and received successfully on the other computer (verified live). (5 pts)</td>
+            <td class="pr-cell">Message sent but required minor troubleshooting (port/firewall). (3–4 pts)</td>
+            <td class="dv-cell">Message attempted but only partially delivered. (2 pts)</td>
+            <td class="bg-cell">Messaging not attempted or completely failed. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4">SUBTOTAL — Ping Test &amp; Messaging</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="15" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 6: DOCUMENTATION -->
+    <div class="section s6">
+      <div class="section-header">
+        <div class="section-icon">📝</div>
+        <div class="section-info">
+          <h3>Category 6: Documentation &amp; Screenshots</h3>
+          <p>Evaluates the completeness and quality of the group's submitted documentation and evidence.</p>
+        </div>
+        <div class="pts-badge">10 Points</div>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th class="criteria-head">Criteria</th>
+            <th class="excellent">Excellent (Full)</th>
+            <th class="proficient">Proficient (Good)</th>
+            <th class="developing">Developing (Partial)</th>
+            <th class="beginning">Beginning (Minimal)</th>
+            <th class="score-head">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criteria-cell">Submission Paper<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">All sections fully filled in; clear, neat, and accurate information. (5 pts)</td>
+            <td class="pr-cell">Most sections filled; 1–2 minor blank fields. (3–4 pts)</td>
+            <td class="dv-cell">Several sections incomplete; some information missing. (2 pts)</td>
+            <td class="bg-cell">Submission paper mostly blank or not submitted. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr>
+            <td class="criteria-cell">Screenshots / Evidence<div class="pts">(max 5 pts)</div></td>
+            <td class="ex-cell">All 6 required screenshots submitted, clearly labeled and readable. (5 pts)</td>
+            <td class="pr-cell">4–5 screenshots submitted; most are labeled. (3–4 pts)</td>
+            <td class="dv-cell">2–3 screenshots submitted; labels missing or unclear. (2 pts)</td>
+            <td class="bg-cell">0–1 screenshot submitted. (0–1 pt)</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="5" placeholder="0"/></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="4">SUBTOTAL — Documentation &amp; Screenshots</td>
+            <td class="score-cell"><input class="score-input" type="number" min="0" max="10" placeholder="0"/></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FINAL SCORE SUMMARY -->
+    <div class="section">
+      <div style="font-size:13px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid var(--accent); padding-bottom:6px; margin-bottom:16px;">
+        📊 Final Score Summary
+      </div>
+      <table class="final-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th style="width:120px; text-align:center;">Max Points</th>
+            <th style="width:140px; text-align:center;">Score Earned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🖥️ &nbsp; Windows OS Installation</td>
+            <td style="text-align:center; font-weight:600;">20</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="20" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>🐧 &nbsp; Linux OS Installation</td>
+            <td style="text-align:center; font-weight:600;">20</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="20" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>⚙️ &nbsp; Dual-Boot Setup &amp; Verification</td>
+            <td style="text-align:center; font-weight:600;">15</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="15" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>🌐 &nbsp; Subnetting &amp; IP Configuration</td>
+            <td style="text-align:center; font-weight:600;">20</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="20" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>📡 &nbsp; Ping Test &amp; Message Sending</td>
+            <td style="text-align:center; font-weight:600;">15</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="15" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>📝 &nbsp; Documentation &amp; Screenshots</td>
+            <td style="text-align:center; font-weight:600;">10</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="10" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>✍️ &nbsp; Bonus: Reflection Essay</td>
+            <td style="text-align:center; font-weight:600;">+5</td>
+            <td style="text-align:center;"><input class="score-input" style="width:60px;" type="number" min="0" max="5" placeholder="—"/></td>
+          </tr>
+          <tr>
+            <td>🏆 &nbsp; GRAND TOTAL</td>
+            <td style="text-align:center; font-size:16px;">100 (+5)</td>
+            <td style="text-align:center; font-size:18px; font-weight:800;">
+              <input style="width:70px; height:36px; border:2px solid rgba(255,255,255,0.5); border-radius:8px; text-align:center; font-size:18px; font-weight:800; font-family:'Inter',sans-serif; background:rgba(255,255,255,0.15); color:#fff;" type="number" placeholder="—"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GRADE SCALE -->
+    <div class="section" style="margin-bottom:20px;">
+      <div style="font-size:13px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid var(--accent); padding-bottom:6px; margin-bottom:14px;">
+        🎓 Grading Scale
+      </div>
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>Grade</th>
+            <th>Score Range</th>
+            <th>Percentage</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="grade-A">A – Excellent</td><td>90–100 pts</td><td>90%–100%</td><td class="grade-A">Outstanding performance; all tasks completed with precision.</td></tr>
+          <tr><td class="grade-B">B – Proficient</td><td>80–89 pts</td><td>80%–89%</td><td class="grade-B">Good performance; most tasks done correctly with minimal issues.</td></tr>
+          <tr><td class="grade-C">C – Developing</td><td>70–79 pts</td><td>70%–79%</td><td class="grade-C">Satisfactory; several tasks completed, some with errors.</td></tr>
+          <tr><td class="grade-D">D – Beginning</td><td>60–69 pts</td><td>60%–69%</td><td class="grade-D">Below expectations; significant tasks incomplete or incorrect.</td></tr>
+          <tr><td class="grade-F">F – Not Met</td><td>Below 60 pts</td><td>Below 60%</td><td class="grade-F">Did not meet minimum competency requirements.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TEACHER NOTES -->
+    <div class="section">
+      <div style="font-size:13px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid var(--accent); padding-bottom:6px; margin-bottom:14px;">
+        💬 Teacher's Remarks
+      </div>
+      <div class="notes-box">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+    </div>
+
+    <!-- SIGNATURES -->
+    <div class="sig-grid">
+      <div class="sig-col">
+        <div class="sig-label">Checked by (Teacher)</div>
+        <div class="sig-area"></div>
+        <div style="font-size:10.5px; color:var(--muted);">Signature over Printed Name</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-label">Received by (Student Leader)</div>
+        <div class="sig-area"></div>
+        <div style="font-size:10.5px; color:var(--muted);">Signature over Printed Name</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-label">Date</div>
+        <div class="sig-area"></div>
+        <div style="font-size:10.5px; color:var(--muted);">Date of Assessment</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <strong>OS Installation &amp; Network Setup Project</strong> &nbsp;|&nbsp;
+    Grading Rubric / Matrix &nbsp;|&nbsp; Document: 03 &nbsp;|&nbsp; S.Y. 2025–2026
+  </div>
+
+</div>
+</body>
+</html>

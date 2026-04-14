@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Instructions – Virtual OS Installation Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #1a3a6b;
+      --accent: #2563eb;
+      --highlight: #dbeafe;
+      --warning: #fef9c3;
+      --warning-border: #facc15;
+      --success: #dcfce7;
+      --success-border: #22c55e;
+      --danger: #fee2e2;
+      --danger-border: #ef4444;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --bg: #f8fafc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .page {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 100%);
+      color: #fff;
+      padding: 32px 40px;
+      position: relative;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .school-name {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 6px;
+    }
+    .badge-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: right;
+      min-width: 160px;
+    }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .divider-line {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin: 20px 0 0;
+    }
+    .meta-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .meta-item { font-size: 12px; opacity: 0.85; }
+    .meta-item strong { font-weight: 600; }
+
+    /* BODY */
+    .body { padding: 36px 40px; }
+
+    .section { margin-bottom: 30px; }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .icon {
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .intro-box {
+      background: var(--highlight);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .objective-list {
+      list-style: none;
+      padding: 0;
+    }
+    .objective-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 13px;
+    }
+    .objective-list li:last-child { border-bottom: none; }
+    .bullet {
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* PHASES */
+    .phase-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .phase-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .phase-body {
+      padding: 12px 16px;
+      background: #fff;
+    }
+    .phase-body p { font-size: 12.5px; color: var(--text); margin-bottom: 8px; }
+    .steps-list {
+      list-style: none;
+      padding: 0;
+    }
+    .steps-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 12.5px;
+      padding: 4px 0;
+      align-items: flex-start;
+    }
+    .step-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Phase Colors */
+    .phase-1 .phase-header { background: #eff6ff; color: #1d4ed8; }
+    .phase-1 .phase-num { background: #1d4ed8; color: #fff; }
+    .phase-1 .step-dot { background: #1d4ed8; }
+    .phase-2 .phase-header { background: #f0fdf4; color: #15803d; }
+    .phase-2 .phase-num { background: #15803d; color: #fff; }
+    .phase-2 .step-dot { background: #15803d; }
+    .phase-3 .phase-header { background: #fdf4ff; color: #7e22ce; }
+    .phase-3 .phase-num { background: #7e22ce; color: #fff; }
+    .phase-3 .step-dot { background: #7e22ce; }
+    .phase-4 .phase-header { background: #fff7ed; color: #c2410c; }
+    .phase-4 .phase-num { background: #c2410c; color: #fff; }
+    .phase-4 .step-dot { background: #c2410c; }
+    .phase-5 .phase-header { background: #fefce8; color: #854d0e; }
+    .phase-5 .phase-num { background: #854d0e; color: #fff; }
+    .phase-5 .step-dot { background: #854d0e; }
+
+    /* ALERT BOXES */
+    .alert {
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: -1px; }
+    .alert-warning { background: var(--warning); border: 1px solid var(--warning-border); }
+    .alert-success { background: var(--success); border: 1px solid var(--success-border); }
+    .alert-danger  { background: var(--danger);  border: 1px solid var(--danger-border); }
+
+    /* DELIVERABLES TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th {
+      background: var(--primary);
+      color: #fff;
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 11.5px;
+      letter-spacing: 0.5px;
+    }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--bg); }
+    .tag {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+    .tag-required { background: #fee2e2; color: #b91c1c; }
+    .tag-optional { background: #f0fdf4; color: #166534; }
+
+    /* FOOTER */
+    .footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 14px 20px;
+      font-size: 11px;
+    }
+    .footer strong { color: #fff; }
+
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; border: none; margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="school-name">🏫 Information Technology Department</div>
+        <div class="title">Virtual OS Installation &amp;<br>Network Setup Simulator</div>
+        <div class="subtitle">Interactive Laboratory Performance Task</div>
+      </div>
+      <div class="badge-group">
+        <div class="badge">💻 Project Type: Virtual Lab</div>
+        <div class="badge">🕐 Duration: 1–2 Sessions</div>
+        <div class="badge">👥 Group Work</div>
+        <div class="badge">📅 S.Y. 2025–2026</div>
+      </div>
+    </div>
+    <hr class="divider-line"/>
+    <div class="meta-row">
+      <div class="meta-item"><strong>Subject:</strong> Computer Systems Servicing / Networking</div>
+      <div class="meta-item"><strong>Method:</strong> Digital Simulation (No Physical Hardware Required)</div>
+      <div class="meta-item"><strong>Course:</strong> CSS NC II / Computer Hardware Servicing</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- OVERVIEW -->
+    <div class="section">
+      <div class="section-title"><span class="icon">📌</span> Project Overview</div>
+      <div class="intro-box">
+        In this <strong>Virtual Performance Task</strong>, student groups will use an interactive simulator to demonstrate their ability to install Operating Systems (Windows and Linux), configure a Dual-Boot environment, and establish a functional virtual network. 
+        <strong>Success is measured by completing all 5 simulation phases and generating a unique Verification Token.</strong>
+      </div>
+    </div>
+
+    <!-- OBJECTIVES -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🎯</span> Learning Objectives</div>
+      <ul class="objective-list">
+        <li><span class="bullet">1</span>Demonstrate the Windows 11 installation process in a simulated environment.</li>
+        <li><span class="bullet">2</span>Perform manual disk partitioning (Primary vs Unallocated) within the simulator.</li>
+        <li><span class="bullet">3</span>Demonstrate the Ubuntu Linux installation alongside an existing OS.</li>
+        <li><span class="bullet">4</span>Design and apply a correct subnet scheme within the Virtual Network tool.</li>
+        <li><span class="bullet">5</span>Assign static IPs and verify connectivity using the <code>virtual ping</code> command.</li>
+        <li><span class="bullet">6</span>Generate and submit a <strong>Verification Token</strong> for final grading.</li>
+      </ul>
+    </div>
+
+    <!-- MATERIALS -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🛠</span> System Requirements</div>
+      <div class="alert alert-success">
+        <span class="alert-icon">💡</span>
+        <div>This lab is 100% Virtual. No physical USBs or PCs are required. Students may use any lab computer or personal laptop.</div>
+      </div>
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Notes</th>
+        </tr>
+        <tr><td>Web Browser (Chrome/Edge/Firefox)</td><td>1 per group</td><td>To run the Virtual Lab Emulator</td></tr>
+        <tr><td>Group Registration</td><td>1 per group</td><td>Must enter Section and Group Name in the App Start Screen</td></tr>
+        <tr><td>Digital Logbook</td><td>1 per group</td><td>To record Subnetting math before entering into the Sim</td></tr>
+      </table>
+    </div>
+
+    <!-- PHASES / PROCEDURE -->
+    <div class="section">
+      <div class="section-title"><span class="icon">📋</span> Virtual Lab Phases & Procedure</div>
+      <div class="phase-grid">
+
+        <div class="phase-card phase-1">
+          <div class="phase-header">
+            <div class="phase-num">1</div>
+            PHASE 1 – Virtual Windows Installation
+          </div>
+          <div class="phase-body">
+            <p>Complete the simulated Windows 11 setup with custom partitioning.</p>
+            <ul class="steps-list">
+              <li><span class="step-dot"></span>Select "Custom: Install Windows only (advanced)".</li>
+              <li><span class="step-dot"></span><strong>CRITICAL:</strong> Use the "New" button to create a partition, but leave at least <strong>50GB Unallocated</strong> for Linux.</li>
+              <li><span class="step-dot"></span>Complete the user account (OOBE) setup.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase-card phase-2">
+          <div class="phase-header">
+            <div class="phase-num">2</div>
+            PHASE 2 – Virtual Linux Installation
+          </div>
+          <div class="phase-body">
+            <p>Install Ubuntu using the free space left during the Windows phase.</p>
+            <ul class="steps-list">
+              <li><span class="step-dot"></span>Select "Something Else" for advanced manual partitioning.</li>
+              <li><span class="step-dot"></span>Create a <strong>/ (root)</strong> partition and <strong>swap</strong> area using the "New Partition" tool.</li>
+              <li><span class="step-dot"></span>Wait for the installation progress bar and configure the user profile.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase-card phase-4">
+          <div class="phase-header">
+            <div class="phase-num">3</div>
+            PHASE 3 – Subnetting & IP Config
+          </div>
+          <div class="phase-body">
+            <p>Design a subnet plan for your virtual network and assign static IP addresses.</p>
+            <ul class="steps-list">
+              <li><span class="step-dot"></span>Complete the Subnetting Quiz within the simulator.</li>
+              <li><span class="step-dot"></span>Assign static IPs to the virtual PCs based on your calculated range.</li>
+              <li><span class="step-dot"></span>Verification is automatic: the sim will check if your IPs are within the valid subnet.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase-card phase-5">
+          <div class="phase-header">
+            <div class="phase-num">4</div>
+            PHASE 4 – Virtual Connectivity Test
+          </div>
+          <div class="phase-body">
+            <p>Test the virtual network using the built-in ping tool.</p>
+            <ul class="steps-list">
+              <li><span class="step-dot"></span>Open the Virtual Terminal.</li>
+              <li><span class="step-dot"></span>Ping the other Virtual PC's IP address.</li>
+              <li><span class="step-dot"></span>Wait for "4 Packets Received" to confirm success.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase-card phase-3">
+          <div class="phase-header">
+            <div class="phase-num">5</div>
+            PHASE 5 – Verification Token
+          </div>
+          <div class="phase-body">
+            <p>Finalize the lab and generate your unique grading code.</p>
+            <ul class="steps-list">
+              <li><span class="step-dot"></span>Once all phases are green, click "Finish Lab".</li>
+              <li><span class="step-dot"></span>Screenshot the **Verification Token** (12-character code).</li>
+              <li><span class="step-dot"></span>The token is tied to your Group Name and Section.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DELIVERABLES -->
+    <div class="section">
+      <div class="section-title"><span class="icon">📦</span> Deliverables &amp; Submission</div>
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Deliverable</th>
+          <th>Format</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Verification Token (e.g., MTItSUNUL...)</td>
+          <td>Digital (Screenshot)</td>
+          <td><span class="tag tag-required">Required</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Screenshot of Completed Subnet Table</td>
+          <td>Digital</td>
+          <td><span class="tag tag-required">Required</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Screenshot of Successful Ping Test</td>
+          <td>Digital</td>
+          <td><span class="tag tag-required">Required</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Reflection Essay (how simulation helps learning)</td>
+          <td>Digital (PDF)</td>
+          <td><span class="tag tag-optional">Optional +5pts</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- REMINDERS -->
+    <div class="section">
+      <div class="section-title"><span class="icon">📢</span> Important Reminders</div>
+      <div class="alert alert-danger">
+        <span class="alert-icon">🚫</span>
+        <div><strong>Do NOT refresh the browser</strong> while in the middle of a phase, or you may lose your current progress. Use the built-in navigation buttons.</div>
+      </div>
+      <div class="alert alert-warning">
+        <span class="alert-icon">⏱️</span>
+        <div><strong>Time Management:</strong> The full simulation takes about 45–60 minutes. Work as a group to solve the subnetting quiz quickly.</div>
+      </div>
+    </div>
+
+    <!-- GRADING SUMMARY -->
+    <div class="section">
+      <div class="section-title"><span class="icon">💯</span> Grading Summary</div>
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>Points</th>
+        </tr>
+        <tr><td>Windows Setup & Partitioning</td><td>20 pts</td></tr>
+        <tr><td>Linux Installation & Manual Setup</td><td>20 pts</td></tr>
+        <tr><td>Subnetting Quiz & Accuracy</td><td>20 pts</td></tr>
+        <tr><td>IP Assignment & Connectivity</td><td>20 pts</td></tr>
+        <tr><td>Final Token Generation</td><td>20 pts</td></tr>
+        <tr><td><strong>TOTAL</strong></td><td><strong>100 pts</strong></td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>Information Technology Department</strong> &nbsp;|&nbsp; Computer Systems Servicing &nbsp;|&nbsp;
+    S.Y. 2025–2026 &nbsp;|&nbsp; Document: 01_Project_Instructions (Virtual Edition)
+  </div>
+
+</div>
+</body>
+</html>
