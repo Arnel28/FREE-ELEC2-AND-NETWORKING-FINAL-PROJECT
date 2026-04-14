@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:exe": "npm run build && electron-builder",
+    "build:exe": "npm run build && npx cross-env CSC_SKIP_SIGNING=true electron-builder",
     "preview": "vite preview"
   },
   "build": {
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",
+    "cross-env": "^7.0.3",
     "electron": "^34.3.0",
     "electron-builder": "^26.8.1",
     "postcss": "^8.5.9",
