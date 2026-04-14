@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/react-swc'
+import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // CRITICAL: This allows the .exe to find the assets offline
+  base: './', // Keep this for offline/desktop build support
 })
